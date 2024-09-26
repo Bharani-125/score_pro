@@ -1,0 +1,212 @@
+<?php
+session_start();
+$title = "All Teams"; 
+include 'inc/header.php';
+
+if (!isset($_SESSION['email'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
+
+<style>
+   #table{
+     height: auto;
+   }
+   
+   table{
+    width: 80% !important;
+    margin-right: 30px;
+   }
+   section{
+    display: flex !important;
+    justify-content: end !important;
+   }
+   #table{
+    margin-top: 20px;
+    margin-bottom: 50px;
+   }
+   th,td{
+    text-align: center;
+    border-right: 0.5px solid #dee2e6 !important;
+   }
+   .add-teams-btn{
+    width: 100px;
+    border: 1px solid #2271b1 !important;
+    color: #2271b1 !important;
+   }
+   .add-teams{
+    display: flex;
+    justify-content: end;
+   }
+   th {
+      background-color: #2271b1 !important; 
+       color: white !important;
+   } 
+  
+</style>
+<!-- modal for created msg -->
+<?php
+if(isset($_SESSION['newteam'])): ?>
+    <div class="modal fade" id="invalidModal" tabindex="-1" aria-labelledby="invalidModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="invalidModalLabel">New record created successfully</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <?php echo $_SESSION['newteam']; ?>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var myModal = new bootstrap.Modal(document.getElementById('invalidModal'));
+      myModal.show();
+    </script>
+    <?php
+    unset($_SESSION['newteam']);
+endif;
+?>
+<!-- modal for deleted msg -->
+<?php
+if(isset($_SESSION['teamdelete'])): ?>
+    <div class="modal fade" id="invalidModal" tabindex="-1" aria-labelledby="invalidModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="invalidModalLabel">Record deleted successfully</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <?php echo $_SESSION['teamdelete']; ?>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var myModal = new bootstrap.Modal(document.getElementById('invalidModal'));
+      myModal.show();
+    </script>
+    <?php
+    unset($_SESSION['teamdelete']);
+endif;
+?>
+<?php
+if(isset($_SESSION['update_success'])): ?>
+    <div class="modal fade" id="invalidModal" tabindex="-1" aria-labelledby="invalidModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="invalidModalLabel">Record updated successfully</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <?php echo $_SESSION['update_success']; ?>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      var myModal = new bootstrap.Modal(document.getElementById('invalidModal'));
+      myModal.show();
+    </script>
+    <?php
+    unset($_SESSION['update_success']);
+endif;
+?>
+<!-- only super admin can acsess -->
+<?php
+include 'inc/conn.php';
+include 'inc/config.php';
+
+try {
+    $email = $_SESSION['email'];
+    $sql = "SELECT usertype FROM users WHERE email = :email";
+    $stmt = $connect->prepare($sql);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+include 'inc/sidebar.php';
+try {
+    $read = "SELECT teams.id, teams.teamname, teams.team_coach, teams.location, teams.status, users.fullname 
+             FROM teams  
+             INNER JOIN users ON teams.created_by = users.id WHERE teams.status = 1";
+    $stmt = $connect->query($read);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // var_dump($results);
+?>
+<h2 class="text-center mt-3 mb-3">Teams List</h2>
+<div class="add-teams">
+<a href="teaminfo.php"><button class="m-3 me-4 p-2 add-teams-btn btn fw-bold">Add team</button></a>
+</div>
+<section id='table'>
+  <table border='1' class='table table-striped table-hover'>
+    <tr>
+      <th class='text-center'>ID</th>
+      <th class='text-center'>Team Name</th>
+      <th class='text-center'>Team Logo</th>
+      <th class='text-center'>Team Coach</th>
+      <th class='text-center'>Location</th>
+      <th class='text-center'>Created by</th>
+      <th class='text-center'>Actions</th>
+    </tr>
+    
+    <?php foreach ($results as $row) : ?>
+      <tr>
+        <td class='text-center'><?php echo $row['id']; ?></td>
+        <td><?php echo $row['teamname']; ?></td>
+        <!-- uploads/<?php echo $_FILES["fileUpload1"]["name"];?> -->
+         <td><img src="" alt="">  </td> 
+        <td><?php echo $row['team_coach']; ?></td>
+        <td><?php echo $row['location']; ?></td>
+        <td><?php echo $row['fullname']; ?></td>
+        <td>
+          <a href='teaminfo.php?id=<?php echo $row['id']; ?>' class="text-decoration-none">
+            <img src='inc/images/user-avatar.png' width='22px'>
+          </a> |
+          <a href='#' data-bs-toggle='modal' data-bs-target='#deleteModal<?php echo $row['id']; ?>'>
+            <img src='inc/images/bin.png' width='22px' title='Delete'>
+          </a>
+        </td>
+      </tr>
+      <div class='modal fade' id='deleteModal<?php echo $row['id']; ?>' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+        <div class='modal-dialog'>
+          <div class='modal-content'>
+            <div class='modal-header'>
+              <h5 class='modal-title' id='exampleModalLabel'>Confirm Delete</h5>
+              <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+            </div>
+            <div class='modal-body'>
+              Are you sure you want to delete the record for <?php echo $row['teamname']; ?>?
+            </div>
+            <div class='modal-footer'>
+              <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cancel</button>
+              <a href='deleteam.php?id=<?php echo $row['id']; ?>' class='btn btn-danger'>Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    <?php endforeach; ?>
+    
+  </table>
+</section>
+
+<?php 
+} catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+}
+?>
+
+</style>
+<?php 
+include 'inc/footer.php';
+?>
