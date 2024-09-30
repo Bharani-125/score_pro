@@ -2,6 +2,11 @@
 $title = "Login page ";
 include 'inc/header.php';
 ?>
+<style>
+    nav ul{
+        display: none;
+    }
+</style>
 <?php 
 include 'inc/config.php';
 include 'inc/conn.php';
@@ -9,10 +14,6 @@ include 'inc/conn.php';
 session_start();
 
 $loginError = '';
-if (isset($_SESSION['email'])) {
-    header("Location: admin.php");
-    exit();
-}
 
 try {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -41,46 +42,6 @@ try {
     echo "Error: " . $e->getMessage();
 }
 ?>
-<style>
-    .buttons{
-        display: none;
-    }
-    .form {
-        height: 85vh;
-        background-color: #f2f2f2;
-    }
-    form {
-        width: 320px;
-        height: auto;
-        padding: 20px;
-        border-radius: 15px;
-        background-color: white;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    label {
-        font-size: 16px;
-        font-weight: 500;
-        color: #333;
-        margin-bottom: 8px;
-    }
-    input[type="text"],
-    input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
-    }
-    input[type="text"]:focus,
-    input[type="password"]:focus {
-        border-color: #007bff;
-        outline: none;
-    }
-    .form-control {
-        font-size: 14px;
-    }
-</style>
 <?php
 if(isset($_COOKIE['loggedout'])): ?>
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -93,9 +54,9 @@ if(isset($_COOKIE['loggedout'])): ?>
 endif;
 ?>
 
-<section class="form d-flex justify-content-center align-items-center">
+<section class="login-sec form d-flex justify-content-center align-items-center">
     
-    <form action="login.php" method="post" class="p-3  d-flex flex-column justify-content-center align-items-start">
+    <form action="login.php" method="post" class="p-3 login-form  d-flex flex-column justify-content-center align-items-start">
         <label for="email">E-mail:</label>
         <input type="text" class="form-control" name="email">
         <label for="email" >Password:</label>

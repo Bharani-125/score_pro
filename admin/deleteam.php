@@ -2,10 +2,7 @@
 session_start();
 include 'inc/conn.php';
 include 'inc/config.php';
-if (!isset($_SESSION['email'])) {
-    header("Location: login.php");
-    exit();
-}
+include 'inc/session-check.php';
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];

@@ -1,63 +1,8 @@
 <?php 
-ob_start();
-session_start();
 $title = "Feedback";
 include 'inc/header.php';
-include 'inc/sidebar.php';
-if (!isset($_SESSION['email'])) {
-    header("Location: login.php");
-    exit();
-}
+
 ?>
-<style>
-    body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-.feedback-container {
-    width: 30%;
-    padding: 30px;
-    margin: 50px auto;
-    background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-}
-h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-label {
-    font-weight: bold;
-    margin-top: 10px;
-    display: block;
-}
-input,select,textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0 20px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-textarea {
-    resize: vertical;
-}
-.submit-fb {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-}
-.submit-fb:hover {
-    background-color: #45a049;
-}
-</style>
 <?php
 include 'inc/conn.php';
 include 'inc/config.php';

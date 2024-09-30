@@ -1,49 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php 
+$title = ' ';
+?> 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $title ?></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <style>
-        header div img{
-            width: 52px;
-            height: 52px;
-        }
-        header{
-            padding: 0 50px;
-            height: 70px;
-        }
-        ul li a{
-            text-decoration: none;
-            font-weight: 500;
-        }
-        nav ul li a{
-            color: white;
-        }
-        nav ul li a:hover{
-            color: #830000;
-        }
-        nav ul li{
-            padding-right: 20px;
-        }
-        .h4{
-            color: white !important;
-        }  
-    </style>
+    <title><?php echo $title; ?></title>
 </head>
-<body>
-    <header class="d-flex justify-content-between align-items-center bg-dark text-light">
-        <div class="d-flex align-items-center">
-            <img src="inc/images/logo.png" alt="" class="me-3">
-            <h2 class="h4 m-0 fw-bold">Cricket ScorePro</h2>
+<link rel="stylesheet" href="style.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.7/css/dataTables.dataTables.css" />
+  
+<script src="https://cdn.datatables.net/2.1.7/js/dataTables.js"></script>
+<!-- header section -->
+
+<header>
+        <div class="header-container d-flex justify-content-between align-items-center">
+            <div class="logo d-flex text-dark align-items-center">
+                <img src="inc/images/logo.png" alt="Logo" class="me-3">
+                <h4 class="m-0">Score-Pro</h4>
+            </div>
+            <nav>
+                <ul class="m-0 p-0">
+                    <li><a href="http://localhost/CricketScorepro/frontend/index.php">Home</a></li>
+                    <li><a href="#scores">Scores</a></li>
+                    <li><a href="http://localhost/CricketScorepro/frontend/teams.php">Teams</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
         </div>
-        <!-- <h4><?php echo $pageTitle ?></h4> -->
-    </header>    
-</body>
-</html>
+    </header>
+    <link rel="stylesheet" href="style.css">

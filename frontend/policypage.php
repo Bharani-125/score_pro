@@ -5,11 +5,6 @@ session_start();
 $title = 'Terms and Conditions';
 include 'inc/header.php';
 
-// include 'inc/sidebar.php';
-if (!isset($_SESSION['email'])) {
-    header("Location: login.php");
-    exit();
-}
 ?>
 <?php
 include 'inc/conn.php';

@@ -5,10 +5,7 @@ session_start();
 include 'inc/conn.php';
 include 'inc/config.php';
 
-if (!isset($_SESSION['email'])) {
-    header("Location: login.php");
-    exit();
-}
+include 'inc/session-check.php';
 
 $emailError = '';
 $user = [
@@ -100,52 +97,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
+<section class="d-flex">
 <?php include 'inc/sidebar.php'; ?>
-<style>
-    .container {
-        margin-top: 50px;
-    }
-    .container form {
-        margin-top: 150px !important;
-        width: 50%;
-        margin: auto;
-        background-color: #f8f9fa;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    .form-group {
-        margin-bottom: 15px;
-    }
-    .form-control {
-        border-radius: 4px;
-        border: 1px solid #ced4da;
-        transition: border-color 0.3s ease;
-    }
-    .form-control:focus {
-        border-color: #80bdff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
-    }
-    .form-check {
-        margin-bottom: 10px;
-    }
-    .btn-primary {
-        background-color: #007bff;
-        border: none;
-        border-radius: 4px;
-        padding: 10px 15px;
-        transition: background-color 0.3s ease;
-    }
-    .btn-primary:hover {
-        background-color: #0056b3;
-    }
-    h2 {
-        margin-bottom: 20px;
-        font-weight: bold;
-    }
-</style>
-<div class="container mt-5">
-    <form action="" method="POST">
+
+<div class="user-sec container">
+    <form action="" method="POST" class="user-form">
         <h2 class="text-center"><?php echo isset($_GET['id']) ? 'Edit User' : 'Add User'; ?></h2>
         <div class="form-group">
             <label for="fullname">Full Name:</label>
@@ -176,6 +133,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <p class="mt-2"><?= $emailError; ?></p>
     </form>
 </div>
-
+</section>
 
 <?php include 'inc/footer.php'; ?>

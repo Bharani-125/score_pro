@@ -6,7 +6,7 @@
                 <a href="" class="text-decoration-none"><li>ABOUT US</li></a>
                 <a href="" class="text-decoration-none"><li>CONTACT US</li></a>
                 <a href="terms.php" class="text-decoration-none"><li>TERMS AND CONDITIONS</li></a>
-                <a href="http://localhost/CricketScorepro/frontend/feedback.php" class="text-decoration-none"><li>FEEDBACK</li></a>
+                <a href="feedback.php" class="text-decoration-none"><li>FEEDBACK</li></a>
                 <a href="policypage.php" class="text-decoration-none"><li>PRIVACY AND POLICY</li></a>
             </ul>
       </div>

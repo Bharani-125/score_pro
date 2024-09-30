@@ -1,0 +1,212 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: "Oswald", sans-serif;
+}
+/* header section */
+header {
+    background-color: whitesmoke;
+    padding: 10px 0;
+    height: 85px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: black !important;
+}
+.header-container {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.logo img{
+    width: 60px;
+    height: 60px;
+}
+nav ul {
+    display: flex;
+    gap: 20px;
+}
+nav ul li {
+    display: inline;
+}
+nav ul li a {
+    text-decoration: none;
+    color: #000000;
+    font-size: 18px;
+    padding: 10px 20px;
+    font-weight: 500;
+}
+nav ul li a:hover{
+    color:brown;
+}
+/* banner section */
+.banner-section{
+    position: relative;
+}
+.banner{
+    position: absolute !important;
+    color: white;
+    top: 0;
+    left: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+   margin: auto;
+    width: 890px;
+    height: 600px;
+}
+.banner h1{
+    font-size: 50px;
+    padding-bottom: 20px;
+}
+.banner p{
+    font-size: 25px;
+    line-height: 2;
+    margin-bottom: 30px;
+}
+.banner-img{
+    width: 100%;
+}
+/* featured section */
+marquee img{
+    margin-right: 80px;
+}
+marquee{
+    margin-top: 40px;
+}
+.featured-section{
+    padding-top: 120px;
+}
+.featured-section h2{
+    color: #ad2112;
+    margin: auto;
+}
+.line{
+    width: 30px !important;
+}
+/* footer */
+footer{
+    background-color: #f2f2f2;
+    padding: 20px 0;
+    margin-top: 60px;
+}
+footer div ul li{
+    font-weight: 600;
+    color: #6e6e6e;
+}
+footer div ul li:hover{
+    color: #ad2112;
+    cursor: pointer;
+}
+footer h5{
+    color: #6e6e6e;
+}
+/*  */
+.teams-responsive {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.team-container {
+    width: 32%;
+    border: 1px solid black;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}
+.team-details {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 10px;
+}
+.team-container img {
+    border-bottom: 1px solid black;
+}
+.team-details {
+    padding: 10px;
+    text-align: center;
+}
+.stats {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    color: grey;
+    text-align: center;
+    padding: 10px;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+}
+.team-container:hover .stats {
+    top: 0;
+    opacity: 1; 
+}
+.Highlights {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: auto;
+}
+.Highlights:hover {
+    background-color: #0056b3;
+}
+/*  */
+.up-btn{
+    position: fixed;
+    right: 60px;
+    bottom: 100px;
+    z-index: 10;
+}
+/* feedback */
+.feedback-container {
+    width: 30%;
+    padding: 30px;
+    margin: 50px auto;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+.feedback-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+.feedback-container label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+}
+.feedback-container input,select,textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+.feedback-container textarea {
+    resize: vertical;
+}
+.feedback-container .submit-fb {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.feedback-container .submit-fb:hover {
+    background-color: #45a049;
+}

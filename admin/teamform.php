@@ -5,10 +5,7 @@ include 'inc/header.php';
 include 'inc/conn.php';
 include 'inc/config.php';
 
-if (!isset($_SESSION['email'])) {
-    header("Location: login.php");
-    exit();
-}
+include 'inc/session-check.php';
 
 $team = [
     'teamname' => '',
@@ -35,25 +32,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $teamname = $_POST['teamname'];
     $teamcoach = $_POST['teamcoach'];
     $location = $_POST['location'];
-    // $logo = $_POST['logo'];
+    $logoFileName = null; 
+
+    if (isset($_FILES['logo']) && $_FILES['logo']['error'] == 0) {
+        $uploads_dir = 'uploads/';
+
+        if (!is_dir($uploads_dir)) {
+            mkdir($uploads_dir, 0777, true);
+        }
+
+        $file_tmp_name = $_FILES['logo']['tmp_name'];
+        $file_name = basename($_FILES['logo']['name']);
+        $file_destination = $uploads_dir . $file_name;
+        if (move_uploaded_file($file_tmp_name, $file_destination)) {
+            $logoFileName = $file_name; 
+            echo "File uploaded successfully!<br>";
+        } else {
+            echo "Failed to upload the file.<br>";
+        }
+    }
 
     try {
         if (isset($_POST['id']) && !empty($_POST['id'])) {
             $id = $_POST['id'];
             $updatedDate = date('Y-m-d H:i:s');
-            $sql = "UPDATE teams SET teamname = :teamname, team_coach = :teamcoach, location = :location, updated_date = :updatedDate WHERE id = :id";
+            $sql = "UPDATE teams SET teamname = :teamname, team_coach = :teamcoach, location = :location, updated_date = :updatedDate";
+            
+            if ($logoFileName !== null) {
+                $sql .= ", logo = :logo";
+            }
+            
+            $sql .= " WHERE id = :id";
+    
             $stmt = $connect->prepare($sql);
+    
             $stmt->bindParam(':teamname', $teamname);
             $stmt->bindParam(':teamcoach', $teamcoach);
             $stmt->bindParam(':location', $location);
-            $stmt->bindParam(':id', $id);
             $stmt->bindParam(':updatedDate', $updatedDate);
-            
+            $stmt->bindParam(':id', $id);
+    
+            if ($logoFileName !== null) {
+                $stmt->bindParam(':logo', $logoFileName);
+            }
+    
             if ($stmt->execute()) {
-                $_SESSION["update_success"] = "Team updated successfully!";
+                echo "Team updated successfully!<br>";
                 header("Location: allteams.php");
                 exit();
+            } else {
+                echo "Failed to update team.<br>";
             }
+    
 
         } else {
             $adminEmail = $_SESSION['email'];
@@ -66,21 +96,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($admin) {
                 $adminId = $admin['id'];
-                
-                $sql = "INSERT INTO teams (teamname, team_coach, location, created_by)
-                        VALUES (:teamname, :teamcoach, :location, :adminId)";
-                
+
+                $sql = "INSERT INTO teams (teamname, team_coach, location, logo, created_by)
+                        VALUES (:teamname, :teamcoach, :location, :logo, :adminId)";
                 $stmt = $connect->prepare($sql);
                 $stmt->bindParam(':teamname', $teamname);
                 $stmt->bindParam(':teamcoach', $teamcoach);
                 $stmt->bindParam(':location', $location);
+                $stmt->bindParam(':logo', $logoFileName);
                 $stmt->bindParam(':adminId', $adminId);
-                
+
                 if ($stmt->execute()) {
                     $_SESSION["newteam"] = "New team record created successfully";
+                    echo "New team record created successfully!<br>";
                     header("Location: allteams.php");
                     exit();
-                }
+                } 
             }
         }
     } catch (PDOException $e) {
@@ -88,79 +119,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
+
 ?>
-<style>
-    .form-container {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    width: 100%;
-    max-width: 600px;
-    margin: 50px auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.form-title {
-    font-size: 24px;
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-label {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.form-control {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-.form-control:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
-}
-
-.btn-submit {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    display: block;
-    margin: 0 auto;
-    transition: background-color 0.3s ease;
-}
-
-.btn-submit:hover {
-    background-color: #0056b3;
-}
-</style>
-<?php include 'inc/sidebar.php'; 
+<?php 
 if (isset($_POST["submit"])) {
      $file = $_FILES['logo'];
      print_r($file);
      $filename = $_FILES['logo']['name'];
 }
 ?>
-<div class="form-container">
+<section class="d-flex">
+    <?php 
+    include 'inc/sidebar.php'; 
+    ?>
+
+<div class="team-form-container">
     <h2 class="form-title"><?php echo isset($_GET['id']) ? 'Edit Cricket Team' : 'Create Cricket Team'; ?></h2>
-    <form action="teaminfo.php" method="POST" enctype="multipart/form-data">
+    <form action="teamform.php" method="POST" enctype="multipart/form-data">
         <?php if (isset($team['id'])): ?>
             <input type="hidden" name="id" value="<?php echo $team['id']; ?>"> 
         <?php endif; ?>
@@ -186,5 +161,6 @@ if (isset($_POST["submit"])) {
         </div>
     </form>
 </div>
+</section>
 
 <?php include 'inc/footer.php'; ?>
